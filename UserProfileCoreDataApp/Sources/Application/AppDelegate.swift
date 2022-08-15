@@ -9,7 +9,7 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
+   
     lazy var persistenceStack: PersistenceStack = .init(modelName: "CoreDataModel")
     
     static let sharedAppDelegate: AppDelegate = {
@@ -26,9 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        
         let router = RouterModule(navigationController: navigationController, assemblyBuilder: assemblyBuilder)
         router.initViewController()
+        window?.overrideUserInterfaceStyle = .light
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         return true
