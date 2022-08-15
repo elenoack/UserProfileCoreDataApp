@@ -96,7 +96,7 @@ extension UsersView {
         static let primaryFontSize: CGFloat = 18
         static let inset: CGFloat = 12
         static let textFieldHeight: CGFloat = 38
-        static let textFieldTopInset: CGFloat = 112
+        static let textFieldTopInset: CGFloat = 143
     }
     
     enum Strings {

@@ -21,6 +21,7 @@ protocol UsersPresenterProtocol: AnyObject {
     func saveFullName(name: String)
     func updateUsers()
     func deleteUser(userName: UserInfo)
+    func showUserInfoCcontroller(userName: String)
 }
 
 // MARK: - UsersPresenter
@@ -42,10 +43,12 @@ class UsersPresenter: UsersPresenterProtocol {
         updateUsers()
     }
     
-    // MARK: - Private
+    // MARK: - Methods
     
     func updateUsers() {
-        guard let users = AppDelegate.sharedAppDelegate.persistenceStack.fetchUser() else { return }
+        guard let users = AppDelegate.sharedAppDelegate.persistenceStack.fetchUser()
+        else {
+            return }
         self.userInfo = users
     }
     
@@ -57,6 +60,10 @@ class UsersPresenter: UsersPresenterProtocol {
     func deleteUser(userName: UserInfo) {
         AppDelegate.sharedAppDelegate.persistenceStack.deleteUser(user: userName)
         self.view?.reload()
+    }
+    
+    func showUserInfoCcontroller(userName: String) {
+        router?.openUserInfoViewController(userName: userName)
     }
 
 }

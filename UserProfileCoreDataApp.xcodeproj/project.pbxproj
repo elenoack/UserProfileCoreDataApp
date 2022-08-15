@@ -21,6 +21,10 @@
 		04CA0B1728A9205900A22B9D /* UserInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA0B1528A9205900A22B9D /* UserInfo+CoreDataClass.swift */; };
 		04CA0B1828A9205900A22B9D /* UserInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA0B1628A9205900A22B9D /* UserInfo+CoreDataProperties.swift */; };
 		04CA0B1A28A9437D00A22B9D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA0B1928A9437D00A22B9D /* String+Extensions.swift */; };
+		04CA0B2028A9673F00A22B9D /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA0B1F28A9673F00A22B9D /* UserInfoViewController.swift */; };
+		04CA0B2228A9692400A22B9D /* UserInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CA0B2128A9692400A22B9D /* UserInfoPresenter.swift */; };
+		04F3F3EE28AA21DF003EEB6D /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F3F3ED28AA21DF003EEB6D /* UserInfoView.swift */; };
+		04F3F3F028AA2D12003EEB6D /* UIStackView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F3F3EF28AA2D12003EEB6D /* UIStackView+Constraints.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +43,10 @@
 		04CA0B1528A9205900A22B9D /* UserInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		04CA0B1628A9205900A22B9D /* UserInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		04CA0B1928A9437D00A22B9D /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		04CA0B1F28A9673F00A22B9D /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
+		04CA0B2128A9692400A22B9D /* UserInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoPresenter.swift; sourceTree = "<group>"; };
+		04F3F3ED28AA21DF003EEB6D /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
+		04F3F3EF28AA2D12003EEB6D /* UIStackView+Constraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Constraints.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				0400E2FD28A80F890028DEA6 /* UIView+Constraints.swift */,
+				04F3F3EF28AA2D12003EEB6D /* UIStackView+Constraints.swift */,
 				04CA0B1928A9437D00A22B9D /* String+Extensions.swift */,
 			);
 			path = Extensions;
@@ -148,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				04B4CFA028A7FD0300052F77 /* UsersModule */,
+				04CA0B1B28A966B300A22B9D /* UserInfoModule */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -214,6 +224,40 @@
 			isa = PBXGroup;
 			children = (
 				04B4CFA628A8007F00052F77 /* UsersView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		04CA0B1B28A966B300A22B9D /* UserInfoModule */ = {
+			isa = PBXGroup;
+			children = (
+				04CA0B1C28A966CB00A22B9D /* Presenter */,
+				04CA0B1E28A966EA00A22B9D /* Controller */,
+			);
+			path = UserInfoModule;
+			sourceTree = "<group>";
+		};
+		04CA0B1C28A966CB00A22B9D /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				04CA0B2128A9692400A22B9D /* UserInfoPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		04CA0B1E28A966EA00A22B9D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				04CA0B1F28A9673F00A22B9D /* UserInfoViewController.swift */,
+				04F3F3EC28AA21C7003EEB6D /* View */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		04F3F3EC28AA21C7003EEB6D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				04F3F3ED28AA21DF003EEB6D /* UserInfoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -299,8 +343,12 @@
 				04CA0B1728A9205900A22B9D /* UserInfo+CoreDataClass.swift in Sources */,
 				04CA0B1A28A9437D00A22B9D /* String+Extensions.swift in Sources */,
 				0400E2FE28A80F890028DEA6 /* UIView+Constraints.swift in Sources */,
+				04CA0B2028A9673F00A22B9D /* UserInfoViewController.swift in Sources */,
 				04B4CF8028A7F17F00052F77 /* AppDelegate.swift in Sources */,
 				04CA0B1828A9205900A22B9D /* UserInfo+CoreDataProperties.swift in Sources */,
+				04F3F3EE28AA21DF003EEB6D /* UserInfoView.swift in Sources */,
+				04F3F3F028AA2D12003EEB6D /* UIStackView+Constraints.swift in Sources */,
+				04CA0B2228A9692400A22B9D /* UserInfoPresenter.swift in Sources */,
 				043FC56928A83AB40020906B /* PersistenceStack.swift in Sources */,
 				04B4CF9C28A7F70200052F77 /* AssemblyModuleBuilder.swift in Sources */,
 				0400E30128A8293C0028DEA6 /* CoreDataModel.xcdatamodeld in Sources */,
