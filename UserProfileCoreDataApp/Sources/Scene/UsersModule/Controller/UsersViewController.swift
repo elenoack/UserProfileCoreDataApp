@@ -16,7 +16,8 @@ class UsersViewController: UIViewController, UITableViewDelegate {
     // MARK: - View
     
     private var usersView: UsersView? {
-        guard isViewLoaded else {
+        guard isViewLoaded
+        else {
             return nil }
         return view as? UsersView
     }
@@ -31,6 +32,11 @@ class UsersViewController: UIViewController, UITableViewDelegate {
         super.viewDidLoad()
         setupNavigationController()
         setupView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reload()
     }
 }
 
@@ -49,7 +55,9 @@ extension UsersViewController {
         usersView?.textField.delegate = self
         usersView?.tableView.delegate = self
         usersView?.tableView.dataSource = self
-        usersView?.newUserButton.addTarget(self, action: #selector(saveUser), for: .touchUpInside)
+        usersView?.newUserButton.addTarget(self,
+                                           action: #selector(saveUser),
+                                           for: .touchUpInside)
     }
 }
 
@@ -57,34 +65,47 @@ extension UsersViewController {
 
 extension UsersViewController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
         presenter?.userInfo?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         let user = presenter?.userInfo?[indexPath.row]
-        cell.textLabel?.text = user?.value(forKeyPath: Strings.userName) as? String
-        cell.selectionStyle = .none
+        cell.textLabel?.text = user?.value(forKeyPath: CoreDataKeyPath.userFullName.rawValue) as? String
         cell.accessoryType = .disclosureIndicator
         return cell
     }
     
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-
+        
         let deleteAction = UIContextualAction(style: .destructive,
                                               title: Strings.delete) { _, _, callback in
-            guard let user = self.presenter?.userInfo?[indexPath.row] else {
+            guard let user = self.presenter?.userInfo?[indexPath.row]
+            else {
                 return }
             self.presenter?.deleteUser(userName: user)
             callback(true)
         }
         deleteAction.backgroundColor = .red
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
-         configuration.performsFirstActionWithFullSwipe = false
-         return configuration
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
+        
+        let user = presenter?.userInfo?[indexPath.row]
+        guard let userName = user?.value(forKeyPath: CoreDataKeyPath.userFullName.rawValue) as? String
+        else {
+            return }
+        tableView.deselectRow(at: indexPath, animated: true)
+        presenter?.showUserInfoCcontroller(userName: userName)
     }
 }
 
@@ -101,7 +122,8 @@ extension UsersViewController: UITextFieldDelegate {
         guard let stringRange = Range(range, in: currentText)
         else {
             return false }
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        let updatedText = currentText.replacingCharacters(in: stringRange,
+                                                          with: string)
         return updatedText.count <= 36
     }
 }
@@ -134,7 +156,6 @@ extension UsersViewController {
     
     enum Strings {
         static let navigationTitle: String = "Users"
-        static let userName: String = "fullName"
         static let delete: String = "Delete"
     }
 }

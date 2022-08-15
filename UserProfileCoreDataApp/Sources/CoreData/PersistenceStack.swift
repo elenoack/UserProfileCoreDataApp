@@ -7,6 +7,12 @@
 
 import CoreData
 
+enum CoreDataKeyPath: String {
+    case userFullName = "fullName"
+    case birthday = "birthday"
+    case gender = "gender"
+}
+
 class PersistenceStack {
     // MARK: - Properties
     
@@ -24,25 +30,26 @@ class PersistenceStack {
         let container = NSPersistentContainer(name: self.modelName)
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {
-                print("\(Strings.notSaveError). \(error), \(error.userInfo)")
+                print("Could not save. \(error), \(error.userInfo)")
             }
         }
         return container
     }()
+    
+    // MARK: - Methods
 
     private lazy var managedContext: NSManagedObjectContext = self.storeContainer.viewContext
 
     func saveUser(fullName: String) {
         let userInfo = UserInfo(context: managedContext)
-        userInfo.setValue(fullName, forKey: Strings.userName)
-        print(userInfo.value(forKey: Strings.userName) as? String ?? "" )
+        userInfo.setValue(fullName, forKey: CoreDataKeyPath.userFullName.rawValue)
         guard managedContext.hasChanges
         else {
             return }
         do {
             try managedContext.save()
         } catch let error as NSError {
-            print("\(Strings.notSaveError). \(error), \(error.userInfo)")
+            print("Unresolved error. \(error), \(error.userInfo)")
         }
     }
     
@@ -56,22 +63,26 @@ class PersistenceStack {
     
     func deleteUser(user: UserInfo) {
         managedContext.delete(user)
+        guard managedContext.hasChanges
+        else {
+            return }
         do {
             try managedContext.save()
         } catch let error as NSError {
-            print("\(Strings.notSaveError). \(error), \(error.userInfo)")
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
+    
+    func updateProfile(user: NSManagedObject) {
+        guard managedContext.hasChanges
+        else {
+            return }
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
         }
     }
 }
 
-// MARK: - Constants
-
-extension PersistenceStack {
-    
-    enum Strings {
-        static let unresolvedError: String = "Unresolved error"
-        static let notSaveError: String = "Could not save"
-        static let userName: String = "fullName"
-    }
-}
 
