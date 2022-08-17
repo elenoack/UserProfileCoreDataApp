@@ -9,7 +9,10 @@ import Foundation
 // MARK: - UserInfoViewProtocol
 
 protocol UserInfoViewProtocol: AnyObject {
-   func reload()
+    func displayUser(userName: String?,
+                     birthday: Date?,
+                     gender: String?,
+                     avatar: Data?)
 }
 
 // MARK: - UsersPresenterProtocol
@@ -19,7 +22,11 @@ protocol UserInfoPresenterProtocol: AnyObject {
          router: RouterProtocol,
          userName: String)
     var user: UserInfo? { get set }
-    func saveUser(user: UserInfo)
+    func saveUser(userName: String?,
+                  birthday: Date?,
+                  gender: String?,
+                  avatar: Data?)
+    func getUser()
 }
 
 // MARK: - UsersPresenter
@@ -45,18 +52,35 @@ class UserInfoPresenter: UserInfoPresenterProtocol {
     
     // MARK: - Methods
     
-    func fetchUser(userName: String) {
+    private func fetchUser(userName: String) {
         guard let users = AppDelegate.sharedAppDelegate.persistenceStack.fetchUser()
         else {
             return }
         for user in users where user.fullName == self.userName {
             self.user = user
         }
-        self.view?.reload()
     }
     
-    func saveUser(user: UserInfo) {
+    func getUser() {
+        let userName = user?.value(forKeyPath: CoreDataKeyPath.userFullName.rawValue) as? String
+        let birthday = user?.value(forKeyPath: CoreDataKeyPath.birthday.rawValue) as? Date
+        let gender = user?.value(forKeyPath: CoreDataKeyPath.gender.rawValue) as? String
+        let avatar = user?.value(forKeyPath: CoreDataKeyPath.avatarImage.rawValue) as? Data
+        self.view?.displayUser(userName: userName,
+                               birthday: birthday,
+                               gender: gender,
+                               avatar: avatar)
+    }
+    
+    func saveUser(userName: String?,
+                  birthday: Date?,
+                  gender: String?,
+                  avatar: Data?) {
+        user?.fullName = userName
+        user?.birthday = birthday
+        user?.gender = gender
+        user?.avatarImage = avatar
+        guard let user = user else { return }
         AppDelegate.sharedAppDelegate.persistenceStack.updateProfile(user: user)
     }
-    
 }

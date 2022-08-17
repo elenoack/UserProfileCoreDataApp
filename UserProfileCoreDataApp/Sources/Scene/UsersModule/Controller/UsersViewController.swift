@@ -88,7 +88,7 @@ extension UsersViewController: UITableViewDataSource {
             guard let user = self.presenter?.userInfo?[indexPath.row]
             else {
                 return }
-            self.presenter?.deleteUser(userName: user)
+            self.presenter?.deleteUser(user: user)
             callback(true)
         }
         deleteAction.backgroundColor = .red

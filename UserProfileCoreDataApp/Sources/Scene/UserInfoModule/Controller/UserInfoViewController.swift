@@ -10,14 +10,10 @@ import UIKit
 class UserInfoViewController: UIViewController {
     // MARK: - Properties
     
-    enum Gender: String {
-        case male = "Male"
-        case female = "Female"
-    }
-    
     var presenter: UserInfoPresenterProtocol?
-    private var isPushButton = true
-    private var gender: String = ""
+    private var isPushButton = false
+    private var gender: String?
+    private var imageData: Data?
     
     // MARK: - View
     
@@ -41,6 +37,7 @@ class UserInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationController()
+        presenter?.getUser()
         setupView()
         setupActions()
     }
@@ -56,11 +53,35 @@ extension UserInfoViewController {
     }
     
     func setupView() {
-        let userName = presenter?.user?.value(forKeyPath: CoreDataKeyPath.userFullName.rawValue) as? String
-        let birthday = presenter?.user?.value(forKeyPath: CoreDataKeyPath.birthday.rawValue) as? Date
+        [userInfoView?.userNameTextField,
+         userInfoView?.birthdayDatePicker,
+         userInfoView?.genderControl].forEach {
+            $0?.isEnabled = isPushButton
+        }
+        userInfoView?.isUserInteractionEnabled = isPushButton
+    }
+    
+    func setupActions() {
+        userInfoView?.genderControl.addTarget(nil, action: #selector(segmentDidChange(_:)), for: .valueChanged)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(chooseAvatar))
+        userInfoView?.photoImageView.addGestureRecognizer(tap)
+    }
+}
+
+// MARK: - UserInfoViewProtocol
+
+extension UserInfoViewController: UserInfoViewProtocol {
+    
+    func displayUser(userName: String?,
+                     birthday: Date?,
+                     gender: String?,
+                     avatar: Data?) {
         userInfoView?.userNameTextField.text = userName
+        if avatar == nil {
+            userInfoView?.photoImageView.image = UIImage(named: "avatar")
+        } else {
+            userInfoView?.photoImageView.image = UIImage(data: avatar!) }
         userInfoView?.birthdayDatePicker.date = birthday ?? .now
-        let gender = presenter?.user?.value(forKeyPath: CoreDataKeyPath.gender.rawValue) as? String
         switch gender {
         case Gender.male.rawValue:
             userInfoView?.genderControl.selectedSegmentIndex = 0
@@ -69,21 +90,6 @@ extension UserInfoViewController {
         default:
             break
         }
-    }
-    
-    func setupActions() {
-        userInfoView?.genderControl.addTarget(nil,
-                                              action: #selector(segmentDidChange(_:)),
-                                              for: .valueChanged)
-    }
-}
-
-// MARK: - UserInfoViewProtocol
-
-extension UserInfoViewController: UserInfoViewProtocol {
-    
-    func reload() {
-        setupView()
     }
 }
 
@@ -101,31 +107,68 @@ extension UserInfoViewController {
     }
     
     @objc
-    func editButtonAction() {
+    func chooseAvatar(sender: UITapGestureRecognizer) {
+        let galleryAction = UIAlertAction(title: Strings.alertTitleGallery,
+                                          style: .default,
+                                          handler: addFromGallery)
+        let photoAction = UIAlertAction(title: Strings.alertTitlePhoto,
+                                        style: .default,
+                                        handler: doNewPhoto)
+        showActionSheet(actions: [galleryAction,
+                                  photoAction,])
+    }
+    
+    @objc
+    private func editButtonAction() {
+        isPushButton.toggle()
+        setupView()
         switch isPushButton {
         case true:
             editButton.title = Strings.navigationButtonSave
-            editButton.tintColor = .systemBlue
-            userInfoView?.userNameTextField.isEnabled = true
-            userInfoView?.birthdayDatePicker.isEnabled = true
-            userInfoView?.genderControl.isEnabled = true
-            isPushButton = false
+            editButton.tintColor = .systemRed
         case false:
             editButton.title = Strings.navigationButtonEdit
             editButton.tintColor = .black
-            guard let user = presenter?.user
-            else {
-                return }
-            user.fullName = userInfoView?.userNameTextField.text
-            user.birthday = userInfoView?.birthdayDatePicker.date
-            user.gender = gender
-            presenter?.saveUser(user: user)
-            userInfoView?.userNameTextField.isEnabled = false
-            userInfoView?.birthdayDatePicker.isEnabled = false
-            userInfoView?.genderControl.isEnabled = false
-            isPushButton = true
-            
+            let userName = userInfoView?.userNameTextField.text
+            let birthday = userInfoView?.birthdayDatePicker.date
+            presenter?.saveUser(userName: userName,
+                                birthday: birthday,
+                                gender: gender,
+                                avatar: imageData)
         }
+    }
+}
+
+// MARK: - UIImagePickerControllerDelegate
+
+extension UserInfoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage
+        else {
+            fatalError("\(Strings.error)\(info)")
+        }
+        imageData = image.pngData() as Data?
+        userInfoView?.photoImageView.image = image
+        userInfoView?.photoImageView.contentMode = .scaleAspectFill
+        userInfoView?.photoImageView.clipsToBounds = true
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func addFromGallery(action: UIAlertAction) {
+        userInfoView?.photoLibraryPicker.delegate = self
+        guard let picker = userInfoView?.photoLibraryPicker
+        else {
+            return }
+        present(picker, animated: true, completion: nil)
+    }
+    
+    func doNewPhoto(action: UIAlertAction) {
+        userInfoView?.photoCameraPicker.delegate = self
+        guard let picker = userInfoView?.photoCameraPicker
+        else {
+            return }
+        present(picker, animated: true, completion: nil)
     }
 }
 
@@ -136,5 +179,8 @@ extension UserInfoViewController {
     enum Strings {
         static let navigationButtonSave: String = "Save"
         static let navigationButtonEdit: String = "Edit"
+        static let alertTitleGallery: String = "Choose from gallery"
+        static let alertTitlePhoto: String = "Take photo"
+        static let error: String = "Expected a dictionary containing an image, but was provided the following: "
     }
 }

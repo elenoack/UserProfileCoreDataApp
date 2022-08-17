@@ -20,14 +20,14 @@ protocol UsersPresenterProtocol: AnyObject {
     var userInfo: [UserInfo]? { get set }
     func saveFullName(name: String)
     func updateUsers()
-    func deleteUser(userName: UserInfo)
+    func deleteUser(user: UserInfo)
     func showUserInfoCcontroller(userName: String)
 }
 
 // MARK: - UsersPresenter
 
 class UsersPresenter: UsersPresenterProtocol {
-   
+    
     // MARK: - Properties
     
     let view: UsersViewProtocol?
@@ -56,15 +56,15 @@ class UsersPresenter: UsersPresenterProtocol {
         AppDelegate.sharedAppDelegate.persistenceStack.saveUser(fullName: name)
         self.view?.reload()
     }
-
-    func deleteUser(userName: UserInfo) {
-        AppDelegate.sharedAppDelegate.persistenceStack.deleteUser(user: userName)
+    
+    func deleteUser(user: UserInfo) {
+        AppDelegate.sharedAppDelegate.persistenceStack.deleteUser(user: user)
         self.view?.reload()
     }
     
     func showUserInfoCcontroller(userName: String) {
         router?.openUserInfoViewController(userName: userName)
     }
-
+    
 }
 

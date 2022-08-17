@@ -7,16 +7,23 @@
 
 import UIKit
 import SnapKit
+import UniformTypeIdentifiers
+
+enum Gender: String {
+    case male = "Male"
+    case female = "Female"
+}
 
 class UserInfoView: UIView {
     // MARK: - Views
     
-    private lazy var photoImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "avatar"))
+    lazy var photoImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: Strings.avatarImage))
         imageView.layer.cornerRadius = Metric.photoImageViewRadius
         imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.isUserInteractionEnabled = true
         imageView.tintColor = .secondarySystemBackground
         return imageView
     }()
@@ -24,18 +31,17 @@ class UserInfoView: UIView {
     private lazy var iconsStackView = createStackView(axis: .vertical,
                                                       distribution: .equalCentering,
                                                       alignment: .top,
-                                                      spacing: 11)
-
-    private lazy var avatrIcon = createIcon(name: "person")
-    private lazy var calendarIcon = createIcon(name: "calendar")
-    private lazy var genderIcon = createIcon(name: "face.smiling")
+                                                      spacing: Metric.iconsStackViewSpacing)
     
+    private lazy var avatarIcon = createIcon(name: Strings.avatarIcon)
+    private lazy var calendarIcon = createIcon(name: Strings.calendarIcon)
+    private lazy var genderIcon = createIcon(name: Strings.genderIcon)
     private lazy var textStackView = createStackView(axis: .vertical,
-                                                         distribution: .fillProportionally,
-                                                         alignment: .leading,
-                                                         spacing: 12)
+                                                     distribution: .fillProportionally,
+                                                     alignment: .leading,
+                                                     spacing: Metric.textStackViewSpacing)
     
-    lazy var userNameTextField = createTextFields(placeholder: "Name")
+    lazy var userNameTextField = createTextFields(placeholder: Strings.placeholder)
     lazy var birthdayDatePicker: UIDatePicker = {
         var datePicker = UIDatePicker()
         datePicker.preferredDatePickerStyle = .compact
@@ -46,8 +52,8 @@ class UserInfoView: UIView {
     }()
     
     lazy var genderControl: UISegmentedControl = {
-        let segmentedItems = ["Male", "Female"]
-        let font = UIFont.systemFont(ofSize: 17)
+        let segmentedItems = [Gender.male.rawValue, Gender.female.rawValue]
+        let font = UIFont.systemFont(ofSize: Metric.systemFont)
         let segmentedControl = UISegmentedControl(items: segmentedItems)
         let selectedAttribute: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: UIColor.black]
         let normalAttribute: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: UIColor.lightGray]
@@ -61,7 +67,23 @@ class UserInfoView: UIView {
     private lazy var separatorView = createSeparatorView()
     private lazy var separatorSecondView = createSeparatorView()
     private lazy var separatorLastView = createSeparatorView()
-
+    
+    lazy var photoLibraryPicker: UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = [UTType.image.identifier]
+        picker.allowsEditing = true
+        return picker
+    }()
+    
+    lazy var photoCameraPicker: UIImagePickerController = {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.mediaTypes = [UTType.image.identifier]
+        picker.allowsEditing = true
+        return picker
+    }()
+    
     // MARK: - Initialization
     
     init() {
@@ -76,7 +98,6 @@ class UserInfoView: UIView {
     
     private func commonInit() {
         backgroundColor = .white
-        
         setupHierarchy()
         setupLayout()
     }
@@ -87,7 +108,7 @@ class UserInfoView: UIView {
         addSubviewsForAutoLayout([photoImageView,
                                   iconsStackView,
                                   textStackView,])
-        iconsStackView.addArrangedSubviewsForAutoLayout([avatrIcon,
+        iconsStackView.addArrangedSubviewsForAutoLayout([avatarIcon,
                                                          calendarIcon,
                                                          genderIcon])
         textStackView.addArrangedSubviewsForAutoLayout([userNameTextField,
@@ -106,30 +127,30 @@ class UserInfoView: UIView {
         }
         
         iconsStackView.snp.makeConstraints { maker in
-            maker.top.equalTo(photoImageView.snp.bottom).inset(-12)
-            maker.leading.equalToSuperview().inset(22)
-            maker.width.equalTo(34)
+            maker.top.equalTo(photoImageView.snp.bottom).inset(-Metric.iconsStackViewTopInset)
+            maker.leading.equalToSuperview().inset(Metric.inset)
+            maker.width.equalTo(Metric.iconsStackViewWidth)
         }
         
         separatorView.snp.makeConstraints { maker in
-            maker.trailing.equalToSuperview().inset(22)
-            maker.height.width.equalTo(Metric.separatorHeight)
+            maker.trailing.equalToSuperview().inset(Metric.inset)
+            maker.height.equalTo(Metric.separatorHeight)
         }
         
         separatorSecondView.snp.makeConstraints { maker in
-            maker.trailing.equalToSuperview().inset(22)
-            maker.height.width.equalTo(Metric.separatorHeight)
+            maker.trailing.equalToSuperview().inset(Metric.inset)
+            maker.height.equalTo(Metric.separatorHeight)
         }
         
         separatorLastView.snp.makeConstraints { maker in
-            maker.trailing.equalToSuperview().inset(22)
-            maker.height.width.equalTo(Metric.separatorHeight)
+            maker.trailing.equalToSuperview().inset(Metric.inset)
+            maker.height.equalTo(Metric.separatorHeight)
         }
         
         textStackView.snp.makeConstraints{ maker in
-            maker.top.equalTo(photoImageView.snp.bottom).inset(-20)
-            maker.leading.equalTo(iconsStackView.snp.trailing).inset(-22)
-            maker.trailing.equalToSuperview().inset(22)
+            maker.top.equalTo(photoImageView.snp.bottom).inset(-Metric.textStackViewTopInset)
+            maker.leading.equalTo(iconsStackView.snp.trailing).inset(-Metric.inset)
+            maker.trailing.equalToSuperview().inset(Metric.inset)
         }
     }
 }
@@ -139,14 +160,24 @@ class UserInfoView: UIView {
 extension UserInfoView {
     
     enum Metric {
-        static let photoImageViewSize: CGFloat = 250
+        static let photoImageViewSize: CGFloat = 170
         static let photoImageViewRadius: CGFloat = Metric.photoImageViewSize/2
         static let photoImageViewTopInset: CGFloat = 88
         static let separatorHeight: CGFloat = 1
+        static let iconsStackViewTopInset: CGFloat = 12
+        static let iconsStackViewWidth: CGFloat = 34
+        static let iconsStackViewSpacing: CGFloat = 11
+        static let inset: CGFloat = 22
+        static let textStackViewTopInset: CGFloat = 20
+        static let textStackViewSpacing: CGFloat = 12
+        static let systemFont: CGFloat = 17
     }
     
     enum Strings {
-        static let printName: String = "Print your name here"
-        static let newUserButtonTitle = "Press"
+        static let avatarImage: String = "avatar"
+        static let avatarIcon: String = "person"
+        static let calendarIcon: String = "calendar"
+        static let genderIcon: String = "face.smiling"
+        static let placeholder: String = "Name"
     }
 }

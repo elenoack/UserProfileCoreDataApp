@@ -1,8 +1,19 @@
 {
   "images" : [
     {
+      "filename" : "1*zta1_8Cv5tjsfx7pzpWl4A-1.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
       "filename" : "1*zta1_8Cv5tjsfx7pzpWl4A.png",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "1*zta1_8Cv5tjsfx7pzpWl4A-2.png",
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
