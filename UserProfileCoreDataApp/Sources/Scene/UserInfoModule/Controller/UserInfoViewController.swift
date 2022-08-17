@@ -18,8 +18,7 @@ class UserInfoViewController: UIViewController {
     // MARK: - View
     
     private var userInfoView: UserInfoView? {
-        guard isViewLoaded else {
-            return nil }
+        guard isViewLoaded else { return nil }
         return view as? UserInfoView
     }
     
