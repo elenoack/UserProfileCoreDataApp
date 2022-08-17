@@ -11,6 +11,7 @@ enum CoreDataKeyPath: String {
     case userFullName = "fullName"
     case birthday = "birthday"
     case gender = "gender"
+    case avatarImage = "avatarImage"
 }
 
 class PersistenceStack {

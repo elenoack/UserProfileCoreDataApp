@@ -16,7 +16,7 @@ class UsersView: UIView {
         textField.placeholder = Strings.printName
         textField.font = UIFont.systemFont(ofSize: Metric.primaryFontSize)
         textField.textAlignment = .left
-        textField.textColor = .darkGray
+        textField.textColor = .black
         textField.backgroundColor = .systemGray5
         textField.becomeFirstResponder()
         textField.borderStyle = .roundedRect
@@ -27,7 +27,7 @@ class UsersView: UIView {
     lazy var newUserButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(Strings.newUserButtonTitle, for: .normal)
-        button.backgroundColor =  #colorLiteral(red: 0.2593759298, green: 0.5698557496, blue: 1, alpha: 1)
+        button.backgroundColor = .systemBlue
         button.titleLabel?.font = UIFont.systemFont(ofSize: Metric.primaryFontSize)
         button.tintColor = .white
         button.layer.cornerRadius = Metric.radius
@@ -101,6 +101,6 @@ extension UsersView {
     
     enum Strings {
         static let printName: String = "Print your name here"
-        static let newUserButtonTitle = "Press"
+        static let newUserButtonTitle: String = "Press"
     }
 }

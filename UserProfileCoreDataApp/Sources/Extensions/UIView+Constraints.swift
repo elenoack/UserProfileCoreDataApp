@@ -21,7 +21,7 @@ extension UIView {
         textField.placeholder = placeholder
         textField.font = UIFont.systemFont(ofSize: 18)
         textField.textAlignment = .left
-        textField.textColor = .darkGray
+        textField.textColor = .black
         textField.backgroundColor = .white
         textField.becomeFirstResponder()
         textField.isEnabled = false
@@ -49,8 +49,7 @@ extension UIView {
         let imageView = UIImageView(image: icon)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .lightGray
-        imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 36,
-                                                                             weight: .regular)
+        imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 36, weight: .regular)
         return imageView
     }
     

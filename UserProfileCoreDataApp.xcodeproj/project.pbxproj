@@ -10,6 +10,7 @@
 		0400E2FB28A8072D0028DEA6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0400E2FA28A8072D0028DEA6 /* SnapKit */; };
 		0400E2FE28A80F890028DEA6 /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0400E2FD28A80F890028DEA6 /* UIView+Constraints.swift */; };
 		0400E30128A8293C0028DEA6 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0400E2FF28A8293C0028DEA6 /* CoreDataModel.xcdatamodeld */; };
+		0412728D28AA87E100267729 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0412728C28AA87E100267729 /* UIViewController+Alert.swift */; };
 		043FC56928A83AB40020906B /* PersistenceStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043FC56828A83AB40020906B /* PersistenceStack.swift */; };
 		04B4CF8028A7F17F00052F77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B4CF7F28A7F17F00052F77 /* AppDelegate.swift */; };
 		04B4CF8428A7F17F00052F77 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B4CF8328A7F17F00052F77 /* UsersViewController.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		0400E2FD28A80F890028DEA6 /* UIView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
 		0400E30028A8293C0028DEA6 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		0412728C28AA87E100267729 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		043FC56828A83AB40020906B /* PersistenceStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStack.swift; sourceTree = "<group>"; };
 		04B4CF7C28A7F17F00052F77 /* UserProfileCoreDataApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UserProfileCoreDataApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B4CF7F28A7F17F00052F77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				0400E2FD28A80F890028DEA6 /* UIView+Constraints.swift */,
 				04F3F3EF28AA2D12003EEB6D /* UIStackView+Constraints.swift */,
 				04CA0B1928A9437D00A22B9D /* String+Extensions.swift */,
+				0412728C28AA87E100267729 /* UIViewController+Alert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				04B4CFA228A7FD2F00052F77 /* UsersPresenter.swift in Sources */,
 				04B4CF9F28A7F77200052F77 /* RouterModule.swift in Sources */,
 				04B4CF8428A7F17F00052F77 /* UsersViewController.swift in Sources */,
+				0412728D28AA87E100267729 /* UIViewController+Alert.swift in Sources */,
 				04CA0B1728A9205900A22B9D /* UserInfo+CoreDataClass.swift in Sources */,
 				04CA0B1A28A9437D00A22B9D /* String+Extensions.swift in Sources */,
 				0400E2FE28A80F890028DEA6 /* UIView+Constraints.swift in Sources */,

@@ -33,8 +33,7 @@ class AssemblyModuleBuilder: AssemblyBuilderProtocol {
         view.presenter = presenter
         return view
     }
-
 }
-    
+
 
 
