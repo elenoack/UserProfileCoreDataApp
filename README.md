@@ -4,7 +4,7 @@ Simple mobile app with a user database.
 > - UIKit
 > - SnapKit
 > - CoreData
-> - MVP 
+> - MVP + Assembly + Router
 
 ## Description
 > - Building UI programmatically using SnapKit
