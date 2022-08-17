@@ -44,9 +44,7 @@ class PersistenceStack {
     func saveUser(fullName: String) {
         let userInfo = UserInfo(context: managedContext)
         userInfo.setValue(fullName, forKey: CoreDataKeyPath.userFullName.rawValue)
-        guard managedContext.hasChanges
-        else {
-            return }
+        guard managedContext.hasChanges else { return }
         do {
             try managedContext.save()
         } catch let error as NSError {
@@ -64,9 +62,7 @@ class PersistenceStack {
     
     func deleteUser(user: UserInfo) {
         managedContext.delete(user)
-        guard managedContext.hasChanges
-        else {
-            return }
+        guard managedContext.hasChanges else { return }
         do {
             try managedContext.save()
         } catch let error as NSError {
@@ -75,9 +71,7 @@ class PersistenceStack {
     }
     
     func updateProfile(user: NSManagedObject) {
-        guard managedContext.hasChanges
-        else {
-            return }
+        guard managedContext.hasChanges else { return }
         do {
             try managedContext.save()
         } catch let error as NSError {
